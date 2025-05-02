@@ -1,7 +1,13 @@
-import React, { useState } from "react";
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, message } from "antd";
+import { Button, Checkbox, Form, Input, message, Modal } from "antd";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setUserData } from "../../redux/slice/userData";
+import "./login.less";
+import { useState } from "react";
+
+// email: bagussetiawan@hotmail.com
+// password: CtOGtW8LyQHHPqm
 
 type FieldType = {
   email?: string;
@@ -10,8 +16,11 @@ type FieldType = {
 };
 
 const Login = () => {
+  const [error, setError] = useState("");
+
   const [form] = Form.useForm();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish: FormProps<FieldType>["onFinish"] = async (values) => {
     console.log("Form values:", values);
@@ -23,21 +32,23 @@ const Login = () => {
       const userRes = data.find((user: any) => user.email === values.email);
 
       if (userRes) {
+        console.log("User found:", userRes);
         if (userRes.password === values.password) {
           console.log("Login successful");
-          message.success("Login successful!");
+          dispatch(setUserData({ ...values, email: userRes.email, name: userRes.name }));
           navigate("/main");
+          message.success("Login successful!");
         } else {
           console.log("Login failed - incorrect password");
-          message.error("Incorrect password. Please try again.");
+          setError("Incorrect password. Please try again.");
         }
       } else {
         console.log("User not found");
-        message.error("User not found. Please check your email.");
+        setError("User not found. Please check your email.");
       }
     } catch (error) {
       console.error("Error fetching data:", error);
-      message.error("An error occurred. Please try again later.");
+      setError("An error occurred while fetching user data. Please try again later.");
     }
   };
 
@@ -47,9 +58,14 @@ const Login = () => {
   };
 
   return (
-    <div className='flex flex-col items-center justify-center h-screen bg-gray-100'>
-      <div className='p-8 bg-white rounded-lg shadow-md w-96'>
+    <div className='login-wrapper'>
+      <div className='login-container'>
         <h1 className='text-2xl font-bold text-center mb-6'>Login</h1>
+        {error && (
+          <div className='error-message'>
+            <p>{error}</p>
+          </div>
+        )}
         <Form
           form={form}
           name='login'
@@ -58,6 +74,7 @@ const Login = () => {
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
           autoComplete='off'
+          className='login-form'
         >
           <Form.Item<FieldType>
             label='Email'
@@ -67,7 +84,10 @@ const Login = () => {
               { type: "email", message: "Please enter a valid email address" },
             ]}
           >
-            <Input />
+            <Input
+              placeholder='email@example.com'
+              className='login-input'
+            />
           </Form.Item>
 
           <Form.Item<FieldType>
@@ -75,7 +95,10 @@ const Login = () => {
             name='password'
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password />
+            <Input.Password
+              placeholder='your password'
+              className='login-input'
+            />
           </Form.Item>
 
           <Form.Item<FieldType>

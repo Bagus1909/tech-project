@@ -3,10 +3,14 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import MainDashboard from "./pages/dashboard/user/main/MainDashboard";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/dashboard/user/profile/Profile";
+import { ReactNode, use } from "react";
+import { useSelector } from "react-redux";
 
-// const ProtectedUserRoute = ()=> {
-//   const user
-// }
+const ProtectedUserRoute = ({ children }: { children: ReactNode }) => {
+  const user = useSelector((state: any) => state.userData.value);
+
+  return user ? <>{children} </> : <Navigate to='/login' />;
+};
 
 const Routing = () => {
   return (
@@ -24,7 +28,13 @@ const Routing = () => {
           />
         }
       />
-      <Route element={<Dashboard />}>
+      <Route
+        element={
+          <ProtectedUserRoute>
+            <Dashboard />
+          </ProtectedUserRoute>
+        }
+      >
         <Route
           index
           path='main'
