@@ -1,5 +1,5 @@
 import type { FormProps } from "antd";
-import { Button, Checkbox, Form, Input, message, Modal } from "antd";
+import { Button, Checkbox, Form, Input, message } from "antd";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setUserData } from "../../redux/slice/userData";
@@ -7,7 +7,7 @@ import "./login.less";
 import { useState } from "react";
 
 // email: bagussetiawan@hotmail.com
-// password: CtOGtW8LyQHHPqm
+// password: bagus123
 
 type FieldType = {
   email?: string;
@@ -35,8 +35,12 @@ const Login = () => {
         console.log("User found:", userRes);
         if (userRes.password === values.password) {
           console.log("Login successful");
-          dispatch(setUserData({ ...values, email: userRes.email, name: userRes.name }));
-          navigate("/main");
+          dispatch(setUserData({ ...values, email: userRes.email, name: userRes.name, isAdmin: userRes.isAdmin }));
+          if (userRes.isAdmin) {
+            navigate("/admin/main");
+          } else {
+            navigate("/main");
+          }
           message.success("Login successful!");
         } else {
           console.log("Login failed - incorrect password");
@@ -87,6 +91,8 @@ const Login = () => {
             <Input
               placeholder='email@example.com'
               className='login-input'
+              autoFocus
+              autoComplete='email'
             />
           </Form.Item>
 
@@ -98,6 +104,7 @@ const Login = () => {
             <Input.Password
               placeholder='your password'
               className='login-input'
+              autoComplete='current-password'
             />
           </Form.Item>
 

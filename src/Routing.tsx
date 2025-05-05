@@ -3,8 +3,11 @@ import Dashboard from "./pages/dashboard/Dashboard";
 import MainDashboard from "./pages/dashboard/user/main/MainDashboard";
 import Login from "./pages/auth/Login";
 import Profile from "./pages/dashboard/user/profile/Profile";
-import { ReactNode, use } from "react";
+import { ReactNode } from "react";
 import { useSelector } from "react-redux";
+import AdminDashboard from "./pages/dashboard/admin/main/AdminDashboard";
+import AdminProfile from "./pages/dashboard/admin/profile/AdminProfile";
+import KelolaUser from "./pages/dashboard/admin/kelola-user/KelolaUser";
 
 const ProtectedUserRoute = ({ children }: { children: ReactNode }) => {
   const user = useSelector((state: any) => state.userData.value);
@@ -35,6 +38,7 @@ const Routing = () => {
           </ProtectedUserRoute>
         }
       >
+        {/* User */}
         <Route
           index
           path='main'
@@ -43,6 +47,19 @@ const Routing = () => {
         <Route
           path='profile'
           element={<Profile />}
+        />
+        {/* Admin */}
+        <Route
+          path='admin/main'
+          element={<AdminDashboard />}
+        />
+        <Route
+          path='admin/profile'
+          element={<AdminProfile />}
+        />
+        <Route
+          path='admin/kelola-user'
+          element={<KelolaUser />}
         />
       </Route>
     </Routes>
