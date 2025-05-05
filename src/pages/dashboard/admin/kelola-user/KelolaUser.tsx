@@ -1,8 +1,8 @@
-import { Button, Space, Table, TableProps, Tag } from "antd";
+import { Button, message, Space, Table, TableProps, Tag } from "antd";
 import HeaderDashbord from "../../../../components/header-dashboard/HeaderDashbord";
 import useGetAllUser from "../../../../utils/useGetAllUser";
 import ModalEditUser from "../../../../components/modals/ModalEditUser";
-import { useState } from "react";
+import { use, useEffect, useState } from "react";
 
 interface DataType {
   key: string | number;
@@ -14,13 +14,34 @@ interface DataType {
 }
 
 const KelolaUser = () => {
-  const { user } = useGetAllUser();
+  const { user, error, loading, refetch } = useGetAllUser();
   const [modalUser, setModalUser] = useState(false);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const handleModalEditUser = (id: number) => {
     setSelectedUser(id);
     setModalUser(true);
+  };
+  const handleDelete = async (id: number) => {
+    setDeleteLoading(true);
+    try {
+      const response = await fetch(import.meta.env.VITE_BASE_URL + "users/" + id, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok " + response.statusText);
+      }
+
+      message.success("User deleted successfully");
+      refetch();
+    } catch (error) {
+      console.error("Error deleting user:", error);
+      message.error("Failed to delete user");
+    } finally {
+      setDeleteLoading(false);
+    }
   };
 
   const columns: TableProps<DataType>["columns"] = [
@@ -47,7 +68,13 @@ const KelolaUser = () => {
       render: (_, record) => (
         <Space size='middle'>
           <Button onClick={() => handleModalEditUser(record.id)}>Edit {record.name}</Button>
-          <a>Delete</a>
+          <Button
+            onClick={() => handleDelete(record.id)}
+            danger
+            disabled={deleteLoading}
+          >
+            Delete {record.name}
+          </Button>
         </Space>
       ),
     },
@@ -71,7 +98,10 @@ const KelolaUser = () => {
         <ModalEditUser
           visible={modalUser}
           onCancel={() => setModalUser(false)}
-          onOk={() => setModalUser(false)}
+          onOk={() => {
+            setModalUser(false);
+            refetch();
+          }}
           users={user}
           selectedUser={selectedUser}
         />
