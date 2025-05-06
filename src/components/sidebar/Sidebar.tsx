@@ -1,7 +1,7 @@
 import { AppstoreAddOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu, Tag } from "antd";
 import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 type LabelSidebarProp = {
   path: string;
@@ -27,11 +27,16 @@ const LabelSidebar = ({ path, label, tag }: LabelSidebarProp) => {
 
 const Sidebar = () => {
   const user = useSelector((state: any) => state.userData.value);
+
+  const location = useLocation();
+
   const isAdmin = user.isAdmin;
+  const path = location.pathname;
+  console.log("path", path);
 
   const AdminItems = [
     {
-      key: "main",
+      key: "/admin/main",
       icon: <AppstoreAddOutlined />,
       label: (
         <LabelSidebar
@@ -41,7 +46,7 @@ const Sidebar = () => {
       ),
     },
     {
-      key: "profile",
+      key: "/admin/profile",
       icon: <UserOutlined />,
       label: (
         <LabelSidebar
@@ -51,7 +56,7 @@ const Sidebar = () => {
       ),
     },
     {
-      key: "kelola-user",
+      key: "/admin/kelola-user",
       icon: <UserOutlined />,
       label: (
         <LabelSidebar
@@ -91,7 +96,7 @@ const Sidebar = () => {
       <Menu
         className='sidebar-menu'
         items={items}
-        defaultSelectedKeys={["main"]}
+        defaultSelectedKeys={[path]}
         mode='inline'
         inlineIndent={16}
       />

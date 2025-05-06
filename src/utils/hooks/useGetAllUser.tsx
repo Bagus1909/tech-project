@@ -22,7 +22,6 @@ const useGetAllUser = () => {
         throw new Error("Network response was not ok " + response.statusText);
       }
       const data = await response.json();
-      console.log("User data kelola data:", data);
       setUser(data);
       setError(null);
       return data;
@@ -37,8 +36,7 @@ const useGetAllUser = () => {
 
   useEffect(() => {
     getUser();
-  }, []); // Empty dependency array to ensure it only runs once on mount
-
+  }, []);
   return { user, loading, error, refetch: getUser };
 };
 

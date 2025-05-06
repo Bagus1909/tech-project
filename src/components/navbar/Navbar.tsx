@@ -10,6 +10,9 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch(setUserData({ value: false }));
+    sessionStorage.removeItem("isLoggedIn");
+    sessionStorage.removeItem("isAdmin");
+    sessionStorage.removeItem("userData");
     navigate("/login");
   };
   return (

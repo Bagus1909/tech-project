@@ -6,8 +6,7 @@ import { setUserData } from "../../redux/slice/userData";
 import "./login.less";
 import { useState } from "react";
 
-// email: bagussetiawan@hotmail.com
-// password: bagus123
+
 
 type FieldType = {
   email?: string;
@@ -37,8 +36,28 @@ const Login = () => {
           console.log("Login successful");
           dispatch(setUserData({ ...values, email: userRes.email, name: userRes.name, isAdmin: userRes.isAdmin }));
           if (userRes.isAdmin) {
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("isAdmin", "true");
+            sessionStorage.setItem(
+              "userData",
+              JSON.stringify({
+                email: userRes.email,
+                name: userRes.name,
+                isAdmin: userRes.isAdmin,
+              })
+            );
             navigate("/admin/main");
           } else {
+            sessionStorage.setItem("isLoggedIn", "true");
+            sessionStorage.setItem("isAdmin", "false");
+            sessionStorage.setItem(
+              "userData",
+              JSON.stringify({
+                email: userRes.email,
+                name: userRes.name,
+                isAdmin: false,
+              })
+            );
             navigate("/main");
           }
           message.success("Login successful!");

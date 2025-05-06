@@ -1,6 +1,6 @@
 import { Button, message, Popconfirm, Space, Table, TableProps, Tag } from "antd";
 import HeaderDashbord from "../../../../components/header-dashboard/HeaderDashbord";
-import useGetAllUser from "../../../../utils/useGetAllUser";
+import useGetAllUser from "../../../../utils/hooks/useGetAllUser";
 import { useState } from "react";
 import ModalUserEdit from "../../../../components/modals/ModalUserEdit";
 import ModalUserAdd from "../../../../components/modals/ModalUserAdd";

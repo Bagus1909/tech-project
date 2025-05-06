@@ -9,10 +9,34 @@ import AdminDashboard from "./pages/dashboard/admin/main/AdminDashboard";
 import AdminProfile from "./pages/dashboard/admin/profile/AdminProfile";
 import KelolaUser from "./pages/dashboard/admin/kelola-user/KelolaUser";
 
+// Protected route for regular users
 const ProtectedUserRoute = ({ children }: { children: ReactNode }) => {
-  const user = useSelector((state: any) => state.userData.value);
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
 
-  return user ? <>{children} </> : <Navigate to='/login' />;
+  if (!isLoggedIn) {
+    return <Navigate to='/login' />;
+  }
+
+  return <>{children}</>;
+};
+
+const ProtectedAdminRoute = ({ children }: { children: ReactNode }) => {
+  const userData = useSelector((state: any) => state.userData.value);
+  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+  const isAdminInSession = sessionStorage.getItem("isAdmin") === "true";
+
+  // Check both sources for admin status
+  const isAdmin = userData?.isAdmin === true || isAdminInSession;
+
+  if (!isLoggedIn) {
+    return <Navigate to='/login' />;
+  }
+
+  if (!isAdmin) {
+    return <Navigate to='/main' />;
+  }
+
+  return <>{children}</>;
 };
 
 const Routing = () => {
@@ -31,6 +55,8 @@ const Routing = () => {
           />
         }
       />
+
+      {/* User Routes */}
       <Route
         element={
           <ProtectedUserRoute>
@@ -38,9 +64,7 @@ const Routing = () => {
           </ProtectedUserRoute>
         }
       >
-        {/* User */}
         <Route
-          index
           path='main'
           element={<MainDashboard />}
         />
@@ -48,7 +72,16 @@ const Routing = () => {
           path='profile'
           element={<Profile />}
         />
-        {/* Admin */}
+      </Route>
+
+      {/* Admin Routes */}
+      <Route
+        element={
+          <ProtectedAdminRoute>
+            <Dashboard />
+          </ProtectedAdminRoute>
+        }
+      >
         <Route
           path='admin/main'
           element={<AdminDashboard />}
@@ -62,6 +95,17 @@ const Routing = () => {
           element={<KelolaUser />}
         />
       </Route>
+
+      {/* Catch-all route for non-existent paths */}
+      <Route
+        path='*'
+        element={
+          <Navigate
+            to='/main'
+            replace
+          />
+        }
+      />
     </Routes>
   );
 };

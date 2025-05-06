@@ -1,5 +1,5 @@
 import { Form, Input, Modal, Select, Skeleton } from "antd";
-import { IUser } from "../../utils/useGetAllUser";
+import { IUser } from "../../utils/hooks/useGetAllUser";
 import { useEffect, useState } from "react";
 
 type ModalUserEditProps = {

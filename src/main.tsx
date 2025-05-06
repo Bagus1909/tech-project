@@ -1,13 +1,13 @@
 import { StrictMode } from "react";
-
 import { createRoot } from "react-dom/client";
 import { BrowserRouter as Router } from "react-router-dom";
 import "./styles/index.less";
 import App from "./App.tsx";
 import { Provider } from "react-redux";
 import store from "./redux/store.ts";
-
 import { unstableSetRender } from "antd";
+import AppInitializer from "./components/AppInitializer.tsx";
+
 declare global {
   interface Element {
     _reactRoot?: ReturnType<typeof createRoot>;
@@ -30,9 +30,11 @@ unstableSetRender((node, container) => {
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <Provider store={store}>
-      <Router>
-        <App />
-      </Router>
+      <AppInitializer>
+        <Router>
+          <App />
+        </Router>
+      </AppInitializer>
     </Provider>
   </StrictMode>
 );
