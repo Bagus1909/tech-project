@@ -1,9 +1,8 @@
 import { Form, Input, Modal, Select, Skeleton } from "antd";
 import { IUser } from "../../utils/useGetAllUser";
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 
-type ModalEditUserProps = {
+type ModalUserEditProps = {
   visible: boolean;
   onCancel: () => void;
   onOk: () => void;
@@ -11,7 +10,7 @@ type ModalEditUserProps = {
   selectedUser: number | null;
 };
 
-const ModalEditUser = ({ visible, onCancel, onOk, users, selectedUser }: ModalEditUserProps) => {
+const ModalUserEdit = ({ visible, onCancel, onOk, users, selectedUser }: ModalUserEditProps) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [inputName, setInputName] = useState<string>("");
   const [inputEmail, setInputEmail] = useState<string>("");
@@ -129,4 +128,4 @@ const ModalEditUser = ({ visible, onCancel, onOk, users, selectedUser }: ModalEd
   );
 };
 
-export default ModalEditUser;
+export default ModalUserEdit;
