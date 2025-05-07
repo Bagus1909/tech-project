@@ -4,6 +4,7 @@ import useGetAllUser from "../../../../utils/hooks/useGetAllUser";
 import { useState } from "react";
 import ModalUserEdit from "../../../../components/modals/ModalUserEdit";
 import ModalUserAdd from "../../../../components/modals/ModalUserAdd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
 
 interface DataType {
   key: string | number;
@@ -16,8 +17,6 @@ interface DataType {
 
 const KelolaUser = () => {
   const { user, error, refetch } = useGetAllUser();
-  const [modalUserEdit, setModalUserEdit] = useState<boolean>(false);
-  const [modalUserAdd, setModalUserAdd] = useState<boolean>(false);
   const [selectedUser, setSelectedUser] = useState<number | null>(null);
   const [localError, setLocalError] = useState<Error | null>(null);
   const [modalMode, setModalMode] = useState<"edit" | "add" | null>(null);
@@ -73,7 +72,7 @@ const KelolaUser = () => {
               handleModalEditUser(record.id);
             }}
           >
-            Edit {record.name}
+            <EditOutlined />
           </Button>
           <Popconfirm
             title='Delete User'
@@ -81,7 +80,9 @@ const KelolaUser = () => {
             onConfirm={() => handleDelete(record.id)}
             onCancel={() => message.error("Delete cancelled")}
           >
-            <Button danger>Delete {record.name}</Button>
+            <Button danger>
+              <DeleteOutlined />
+            </Button>
           </Popconfirm>
         </Space>
       ),

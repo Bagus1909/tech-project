@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 const Profile = () => {
   const user = useSelector((state: any) => state.userData);
   const userData = user.value;
-  console.log("userData", userData);
+  console.log("[USER PROFILE] userData : ", userData);
 
   return (
     <>

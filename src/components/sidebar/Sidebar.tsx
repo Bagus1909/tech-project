@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, AppstoreOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu, Tag } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
@@ -37,7 +37,7 @@ const Sidebar = () => {
   const AdminItems = [
     {
       key: "/admin/main",
-      icon: <AppstoreAddOutlined />,
+      icon: <AppstoreOutlined />,
       label: (
         <LabelSidebar
           path='admin/main'
@@ -57,7 +57,7 @@ const Sidebar = () => {
     },
     {
       key: "/admin/kelola-user",
-      icon: <UserOutlined />,
+      icon: <TeamOutlined />,
       label: (
         <LabelSidebar
           path='admin/kelola-user'
@@ -70,7 +70,7 @@ const Sidebar = () => {
   const Useritems = [
     {
       key: "main",
-      icon: <AppstoreAddOutlined />,
+      icon: <AppstoreOutlined />,
       label: (
         <LabelSidebar
           path='main'
