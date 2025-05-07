@@ -1,4 +1,4 @@
-import { AppstoreAddOutlined, AppstoreOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
+import { AppstoreOutlined, TeamOutlined, UserOutlined } from "@ant-design/icons";
 import { Menu, Tag } from "antd";
 import { useSelector } from "react-redux";
 import { NavLink, useLocation } from "react-router-dom";
