@@ -22,7 +22,6 @@ const AdminProfile = () => {
             <Descriptions.Item label='Role'>{user.isAdmin ? "Admin" : "User"}</Descriptions.Item>
           </Descriptions>
         </Card>
-        ?
       </div>
     </>
   );
